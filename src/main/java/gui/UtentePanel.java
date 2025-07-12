@@ -7,17 +7,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Pannello grafico per la gestione degli utenti.
+ * Permette la creazione di nuovi utenti e visualizza l'elenco di quelli esistenti.
+ */
 public class UtentePanel extends JPanel {
+
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JButton btnCrea;
     private DefaultListModel<String> modelUtenti;
     private JList<String> listaUtenti;
 
+    /**
+     * Costruttore che inizializza il pannello, i componenti grafici e gli eventi associati.
+     */
     public UtentePanel() {
         setLayout(new BorderLayout());
         setBackground(new Color(245, 245, 220)); // beige
 
+        // Pannello del form
         JPanel form = new JPanel();
         form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(new Color(245, 245, 220));
@@ -36,6 +45,7 @@ public class UtentePanel extends JPanel {
         form.add(Box.createVerticalStrut(10));
         form.add(btnCrea);
 
+        // Lista utenti
         modelUtenti = new DefaultListModel<>();
         listaUtenti = new JList<>(modelUtenti);
         JScrollPane scroll = new JScrollPane(listaUtenti);
@@ -44,6 +54,7 @@ public class UtentePanel extends JPanel {
         add(form, BorderLayout.NORTH);
         add(scroll, BorderLayout.CENTER);
 
+        // Listener per la creazione utente
         btnCrea.addActionListener(e -> {
             String user = txtUsername.getText().trim();
             String pass = new String(txtPassword.getPassword()).trim();
@@ -65,6 +76,7 @@ public class UtentePanel extends JPanel {
             txtPassword.setText("");
         });
 
+        // Carica utenti esistenti nella lista
         List<Utente> utenti = Controller.getUtenti();
         for (Utente u : utenti) {
             modelUtenti.addElement(u.username);

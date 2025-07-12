@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Pannello per la creazione e visualizzazione delle bacheche associate a un utente.
+ */
 public class BachecaPanel extends JPanel {
     private JComboBox<Bacheca.tipoBacheca> comboTipo;
     private JTextArea txtDescrizione;
@@ -15,6 +18,11 @@ public class BachecaPanel extends JPanel {
     private JList<Bacheca> lista;
     private String username;
 
+    /**
+     * Costruttore del pannello delle bacheche.
+     *
+     * @param username nome utente a cui sono associate le bacheche
+     */
     public BachecaPanel(String username) {
         this.username = username;
         setLayout(new BorderLayout());
@@ -27,6 +35,7 @@ public class BachecaPanel extends JPanel {
         btnCrea.setBackground(new Color(222, 184, 135));
         btnCrea.setFont(new Font("SansSerif", Font.BOLD, 13));
 
+        // Form per creazione bacheca
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(new Color(245, 245, 220));
@@ -38,6 +47,7 @@ public class BachecaPanel extends JPanel {
         formPanel.add(Box.createVerticalStrut(5));
         formPanel.add(btnCrea);
 
+        // Lista delle bacheche esistenti
         model = new DefaultListModel<>();
         lista = new JList<>(model);
         JScrollPane scrollPane = new JScrollPane(lista);
@@ -46,11 +56,13 @@ public class BachecaPanel extends JPanel {
         add(formPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Caricamento bacheche dell'utente
         List<Bacheca> bacheche = Controller.getBachechePerUtente(username);
         for (Bacheca b : bacheche) {
             model.addElement(b);
         }
 
+        // Azione per creare nuova bacheca
         btnCrea.addActionListener(e -> {
             try {
                 Bacheca.tipoBacheca tipo = (Bacheca.tipoBacheca) comboTipo.getSelectedItem();
@@ -65,5 +77,6 @@ public class BachecaPanel extends JPanel {
         });
     }
 }
+
 
 

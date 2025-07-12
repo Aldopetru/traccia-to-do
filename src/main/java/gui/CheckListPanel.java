@@ -7,13 +7,26 @@ import model.ToDo;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Pannello grafico per la gestione della checklist associata a un ToDo.
+ * Permette di aggiungere, modificare, completare o eliminare voci.
+ */
 public class CheckListPanel extends JPanel {
     private DefaultListModel<Check_list> model;
     private JList<Check_list> lista;
-    private JButton btnAggiungi, btnModifica, btnElimina, btnCompleta;
+    private JButton btnAggiungi;
+    private JButton btnModifica;
+    private JButton btnElimina;
+    private JButton btnCompleta;
 
     private ToDo todo;
+    private ToDoGestioneFrame parent;
 
+    /**
+     * Costruttore del pannello checklist associato a un determinato ToDo.
+     *
+     * @param todo l'oggetto ToDo a cui è associata la checklist
+     */
     public CheckListPanel(ToDo todo) {
         this.todo = todo;
 
@@ -48,6 +61,7 @@ public class CheckListPanel extends JPanel {
         add(scroll, BorderLayout.CENTER);
         add(btnPanel, BorderLayout.SOUTH);
 
+        // Azione: aggiunta voce checklist
         btnAggiungi.addActionListener(e -> {
             String voce = JOptionPane.showInputDialog(this, "Inserisci una nuova voce:");
             if (voce != null && !voce.isBlank()) {
@@ -56,6 +70,7 @@ public class CheckListPanel extends JPanel {
             }
         });
 
+        // Azione: modifica voce selezionata
         btnModifica.addActionListener(e -> {
             Check_list selezionata = lista.getSelectedValue();
             if (selezionata != null) {
@@ -67,14 +82,28 @@ public class CheckListPanel extends JPanel {
             }
         });
 
+        // Azione: completamento voce selezionata
         btnCompleta.addActionListener(e -> {
             Check_list selezionata = lista.getSelectedValue();
             if (selezionata != null) {
                 Controller.completaCheck(selezionata);
                 lista.repaint();
+
+                if (todo.getChecklist().stream().allMatch(Check_list::isStato)) {
+                    todo.Stato_todo = true;
+                    if (parent != null) {
+                        parent.caricaToDo(); // 🔄 aggiorna lista visiva ToDo con ✔️
+                    }
+                    JOptionPane.showMessageDialog(this,
+                            "✅ Tutte le voci completate! Il ToDo è stato automaticamente segnato come completato.",
+                            "ToDo Completato",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    this.repaint();
+                }
             }
         });
 
+        // Azione: eliminazione voce selezionata
         btnElimina.addActionListener(e -> {
             Check_list selezionata = lista.getSelectedValue();
             if (selezionata != null) {
@@ -84,4 +113,5 @@ public class CheckListPanel extends JPanel {
         });
     }
 }
+
 

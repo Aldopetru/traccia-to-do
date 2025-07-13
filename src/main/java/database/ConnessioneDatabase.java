@@ -1,39 +1,37 @@
-package Database;
+package database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Classe di utilità per la gestione della connessione al database PostgreSQL.
+ */
 public class ConnessioneDatabase {
 
-	// ATTRIBUTI
-	private static ConnessioneDatabase instance;
-	public Connection connection = null;
-	private String nome = "postgres";
-	private String password = "password";
-	private String url = "jdbc:postgresql://localhost:5433/Borsa";
-	private String driver = "org.postgresql.Driver";
+    /** URL di connessione al database PostgreSQL */
+    private static final String URL = "jdbc:postgresql://localhost:5432/todolist_db";
 
-	// COSTRUTTORE
-	private ConnessioneDatabase() throws SQLException {
-		try {
-			Class.forName(driver);
-			connection = DriverManager.getConnection(url, nome, password);
+    /** Nome utente del database */
+    private static final String USER = "postgres"; // Sostituisci con il tuo username se diverso
 
-		} catch (ClassNotFoundException ex) {
-			System.out.println("Database Connection Creation Failed : " + ex.getMessage());
-			ex.printStackTrace();
-		}
+    /** Password del database */
+    private static final String PASSWORD = "Aldo2005"; // ⚠️ Metti qui la TUA password
 
-	}
-
-
-	public static ConnessioneDatabase getInstance() throws SQLException {
-		if (instance == null) {
-			instance = new ConnessioneDatabase();
-		} else if (instance.connection.isClosed()) {
-			instance = new ConnessioneDatabase();
-		}
-		return instance;
-	}
+    /**
+     * Restituisce una connessione attiva al database PostgreSQL.
+     *
+     * @return un oggetto {@link Connection} valido
+     * @throws RuntimeException se la connessione fallisce
+     */
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (SQLException e) {
+            System.err.println("Errore di connessione al database: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
 }
+
+

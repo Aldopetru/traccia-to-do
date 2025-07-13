@@ -1,29 +1,37 @@
 package model;
 
 /**
- * The type Utente.
+ * Classe che rappresenta un utente del sistema.
+ * Contiene il nome utente e la password.
  */
 public class Utente {
-    private final String login;
+
+    /** Nome utente univoco dell'utente */
+    public final String username;
+
+    /** Password dell'utente (non viene mostrata o modificata direttamente) */
     private String password;
 
     /**
-     * Instantiates a new Utente.
+     * Costruttore per creare un nuovo utente.
      *
-     * @param login    the login
-     * @param password the password
+     * @param username nome utente
+     * @param password password associata all'utente
      */
-    public Utente(String login, String password) {
-        this.login = login;
+    public Utente(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
     /**
-     * Gets login.
+     * Restituisce la password dell'utente.
      *
-     * @return the login
+     * @return password dell'utente
      */
-    public String getLogin() {
-        return login;
+    public String getPassword() {
+        return password;
     }
 }
+
+
+
